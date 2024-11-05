@@ -24,21 +24,16 @@ RESOLUTIONS = [
 # RESOLUTIONS = None
 
 # Training images and XML files directory.
-TRAIN_IMG = 'data/aquarium/train'
-TRAIN_ANNOT = 'data/aquarium/train'
+TRAIN_IMG = 'data/ganoderma/train'
+TRAIN_ANNOT = 'data/ganoderma/train'
 # Validation images and XML files directory.
-VALID_IMG = 'data/aquarium/valid'
-VALID_ANNOT = 'data/aquarium/valid'
+VALID_IMG = 'data/ganoderma/valid'
+VALID_ANNOT = 'data/ganoderma/valid'
 # Classes: 0 index is reserved for background.
 CLASSES = [
     '__background__',
-    'fish', 
-    'jellyfish', 
-    'penguin',
-    'shark', 
-    'puffin', 
-    'stingray',
-    'starfish'
+    'ganoderma', 
+    'primordium'
 ]
 
 NUM_CLASSES = len(CLASSES)
@@ -51,4 +46,4 @@ AMP = True
 
 # If kept None, it will be incremental as exp1, exp2,
 # else it will be name provided.
-PROJECT_NAME = 'retinanet' 
+PROJECT_NAME = 'ganoderma-retinanet' 
