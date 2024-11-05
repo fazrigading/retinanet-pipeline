@@ -129,7 +129,7 @@ dmypy.json
 .pyre/
 
 # Data directories.
-data/
+# data/
 examples/checkpoints
 examples/plots
 examples/results
@@ -137,6 +137,6 @@ examples/results
 runs/
 
 # Weight file.
-*.pth
-*.pt
-weights/
+# *.pth
+# *.pt
+# weights/
