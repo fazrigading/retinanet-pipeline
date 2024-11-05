@@ -61,9 +61,16 @@ class CustomDataset(Dataset):
         # Box coordinates for xml files are extracted 
         # and corrected for image size given.
         for member in root.findall('object'):
-            # Get label and map the `classes`.
-            labels.append(self.classes.index(member.find('name').text))
-            
+            # # Get label and map the `classes`.
+            # labels.append(self.classes.index(member.find('name').text))
+
+            # FIXED: Ensure the labels are exists
+            label_name = member.find('name').text
+            if label_name in self.classes:
+                labels.append(self.classes.index(label_name))
+            else:
+                raise ValueError(f"Label '{label_name}' not found in classes.")
+
             # Left corner x-coordinates.
             xmin = int(member.find('bndbox').find('xmin').text)
             # Right corner x-coordinates.
@@ -80,12 +87,19 @@ class CustomDataset(Dataset):
             ymin_final = (ymin/image_height)*self.height
             ymax_final = (ymax/image_height)*self.height
 
-            # Check that max coordinates are at least one pixel
-            # larger than min coordinates.
-            if xmax_final == xmin_final:
-                xmin_final -= 1
-            if ymax_final == ymin_final:
-                ymin_final -= 1
+            # # Check that max coordinates are at least one pixel
+            # # larger than min coordinates.
+            # if xmax_final == xmin_final:
+            #     xmin_final -= 1
+            # if ymax_final == ymin_final:
+            #     ymin_final -= 1
+
+            # FIXED: Ensure max coordinates are valid and non-negative
+            xmin_final = max(0, min(self.width, xmin_final))
+            xmax_final = max(0, min(self.width, xmax_final))
+            ymin_final = max(0, min(self.height, ymin_final))
+            ymax_final = max(0, min(self.height, ymax_final))
+
             # Check that all coordinates are within the image.
             if xmax_final > self.width:
                 xmax_final = self.width
@@ -96,9 +110,15 @@ class CustomDataset(Dataset):
         
         # Bounding box to tensor.
         boxes = torch.as_tensor(boxes, dtype=torch.float32)
-        # Area of the bounding boxes.
-        area = (boxes[:, 3] - boxes[:, 1]) * (boxes[:, 2] - boxes[:, 0]) if len(boxes) > 0 \
-            else torch.as_tensor(boxes, dtype=torch.float32)
+        
+        # # Area of the bounding boxes.
+        # area = (boxes[:, 3] - boxes[:, 1]) * (boxes[:, 2] - boxes[:, 0]) if len(boxes) > 0 \
+        #     else torch.as_tensor(boxes, dtype=torch.float32)
+        # FIXED: Ensuring area always a tensor even if it is empty
+        area = (boxes[:, 3] - boxes[:, 1]) * (boxes[:, 2] - boxes[:, 0])
+        if area.numel() == 0:
+            area = torch.tensor([], dtype=torch.float32)
+
         # No crowd instances.
         iscrowd = torch.zeros((boxes.shape[0],), dtype=torch.int64)
         # Labels to tensor.
@@ -121,8 +141,13 @@ class CustomDataset(Dataset):
             image_resized = sample['image']
             target['boxes'] = torch.Tensor(sample['bboxes'])
         
-        if np.isnan((target['boxes']).numpy()).any() or target['boxes'].shape == torch.Size([0]):
-            target['boxes'] = torch.zeros((0, 4), dtype=torch.int64)
+        # if np.isnan((target['boxes']).numpy()).any() or target['boxes'].shape == torch.Size([0]):
+        #     target['boxes'] = torch.zeros((0, 4), dtype=torch.int64)
+        # FIXED: Handling NaN Values for debugging
+        if torch.isnan(target['boxes']).any() or target['boxes'].shape == torch.Size([0]):
+            print(f"Invalid boxes detected at index {idx}.")
+            target['boxes'] = torch.zeros((0, 4), dtype=torch.float32)
+
         return image_resized, target
 
     def __len__(self):
