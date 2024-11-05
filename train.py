@@ -51,7 +51,7 @@ random.seed(seed)
 
 if __name__ == '__main__':
     OUT_DIR = set_training_dir(PROJECT_NAME)
-    SCALER = torch.cuda.amp.GradScaler() if AMP else None
+    SCALER = torch.amp.GradScaler("cuda") if AMP else None
     set_log(OUT_DIR)
     train_dataset = create_train_dataset(
         TRAIN_IMG, TRAIN_ANNOT, CLASSES, RESIZE_TO,
