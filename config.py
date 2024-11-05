@@ -1,9 +1,9 @@
 import torch
 
-BATCH_SIZE = 2 # Increase / decrease according to GPU memeory.
+BATCH_SIZE = 16 # Increase / decrease according to GPU memeory.
 RESIZE_TO = 640 # Base image resolution transforms.
-NUM_EPOCHS = 75 # Number of epochs to train for.
-NUM_WORKERS = 4 # Number of parallel workers for data loading.
+NUM_EPOCHS = 100 # Number of epochs to train for.
+NUM_WORKERS = 2 # Number of parallel workers for data loading.
 LR = 0.005 # Initial learning rate. 
 DEVICE = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
 
