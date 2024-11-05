@@ -4,6 +4,8 @@ import torch
 from functools import partial
 from torchvision.models.detection.retinanet import RetinaNetClassificationHead
 
+from config import NUM_CLASSES as nc
+
 def create_model(num_classes=91, min_size=640, max_size=640):
     model = torchvision.models.detection.retinanet_resnet50_fpn_v2(
         weights='DEFAULT'
@@ -22,7 +24,7 @@ def create_model(num_classes=91, min_size=640, max_size=640):
     return model
 
 if __name__ == '__main__':
-    model = create_model(4)
+    model = create_model(nc)
     print(model)
     # Total parameters and trainable parameters.
     total_params = sum(p.numel() for p in model.parameters())
