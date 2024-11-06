@@ -111,7 +111,7 @@ if __name__ == '__main__':
     )
     test_loader = create_valid_loader(
         test_dataset, 
-        args.batch,
+        int(args.batch),
         num_workers=NUM_WORKERS,
     )
     metric = MeanAveragePrecision()
