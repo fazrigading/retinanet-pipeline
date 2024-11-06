@@ -112,8 +112,9 @@ if __name__ == '__main__':
         args.batch,
         num_workers=NUM_WORKERS,
     )
-    metric = MeanAveragePrecision(max_detection_thresholds=[1, 10, 200])
-
+    metric = MeanAveragePrecision()
+    metric.warn_on_many_detections=False
+    
     metric_summary = validate(test_loader, model)
     print(f"mAP_50: {metric_summary['map_50']*100:.3f}")
     print(f"mAP_50_95: {metric_summary['map']*100:.3f}")
