@@ -61,11 +61,10 @@ def validate(valid_data_loader, model):
         images, targets = data
         
         images = list(image.to(DEVICE) for image in images)
-        # targets = [{k: v.to(DEVICE) for k, v in t.items()} for t in targets]
+        targets = [{k: v.to(DEVICE) for k, v in t.items()} for t in targets]
         
         with torch.no_grad():
-            # outputs = model(images, targets)
-            outputs = model(images)
+            outputs = model(images, targets)
 
         # For mAP calculation using Torchmetrics.
         #####################################
@@ -80,7 +79,6 @@ def validate(valid_data_loader, model):
             preds.append(preds_dict)
             target.append(true_dict)
         #####################################
-        outputs = [{k: v.to(DEVICE) for k, v in t.items()} for t in outputs]
     
 
     metric.reset()
@@ -91,7 +89,7 @@ def validate(valid_data_loader, model):
 if __name__ == '__main__':
     # Load the best model and trained weights.
     model = create_model(num_classes=NUM_CLASSES)
-    checkpoint = torch.load(args.weights, map_location=DEVICE)
+    checkpoint = torch.load(args.weights, weights_only=True, map_location=DEVICE)
     model.load_state_dict(checkpoint['model_state_dict'])
     model.to(DEVICE).eval()
 
