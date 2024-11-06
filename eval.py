@@ -11,7 +11,8 @@ from config import (
     TEST_IMG,
     TEST_ANNOT,
     RESIZE_TO,
-    CLASSES
+    CLASSES,
+    PROJECT_NAME
 )
 from torchmetrics.detection.mean_ap import MeanAveragePrecision
 from model import create_model
@@ -20,7 +21,7 @@ from datasets import create_valid_dataset, create_valid_loader
 parser = argparse.ArgumentParser()
 parser.add_argument(
     '--weights',
-    default='outputs/best_model.pth',
+    default=f'runs/training/{PROJECT_NAME}/best_model.pth',
     help='path to the model weights'
 )
 parser.add_argument(
