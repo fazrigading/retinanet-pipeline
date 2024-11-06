@@ -21,6 +21,7 @@ from datasets import create_valid_dataset, create_valid_loader
 parser = argparse.ArgumentParser()
 parser.add_argument(
     '--weights',
+    dest='weights',
     default=f'runs/training/{PROJECT_NAME}/best_model.pth',
     help='path to the model weights'
 )
@@ -44,6 +45,7 @@ parser.add_argument(
 )
 parser.add_argument(
     '--batch',
+    dest='batch',
     default=8,
     help='batch size for the data loader'
 )
