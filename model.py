@@ -19,7 +19,7 @@ def create_model(num_classes=91, min_size=640, max_size=640):
         norm_layer=partial(torch.nn.GroupNorm, 32)
     )
 
-    model.transform.min_size = min_size
+    model.transform.min_size = [min_size] if isinstance(min_size, int) else min_size #min_size
     model.transform.max_size = max_size
     return model
 
