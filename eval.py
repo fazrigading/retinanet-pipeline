@@ -61,10 +61,11 @@ def validate(valid_data_loader, model):
         images, targets = data
         
         images = list(image.to(DEVICE) for image in images)
-        targets = [{k: v.to(DEVICE) for k, v in t.items()} for t in targets]
+        # targets = [{k: v.to(DEVICE) for k, v in t.items()} for t in targets]
         
         with torch.no_grad():
-            outputs = model(images, targets)
+            # outputs = model(images, targets)
+            outputs = model(images)
 
         # For mAP calculation using Torchmetrics.
         #####################################
@@ -79,6 +80,8 @@ def validate(valid_data_loader, model):
             preds.append(preds_dict)
             target.append(true_dict)
         #####################################
+        outputs = [{k: v.to(DEVICE) for k, v in t.items()} for t in outputs]
+    
 
     metric.reset()
     metric.update(preds, target)
