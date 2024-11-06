@@ -6,6 +6,10 @@ from config import (
     DEVICE, 
     NUM_CLASSES, 
     NUM_WORKERS, 
+    VALID_IMG,
+    VALID_ANNOT,
+    TEST_IMG,
+    TEST_ANNOT,
     RESIZE_TO,
     CLASSES
 )
@@ -20,15 +24,21 @@ parser.add_argument(
     help='path to the model weights'
 )
 parser.add_argument(
+    '--split',
+    dest='split',
+    default='valid',
+    help='data split used for eval'
+)
+parser.add_argument(
     '--input-images',
     dest='input_images',
-    default='data/Test/Test/JPEGImages',
+    default=None, #'data/Test/Test/JPEGImages',
     help='path to the evaluation images'
 )
 parser.add_argument(
     '--input-annots',
     dest='input_annots',
-    default='data/Test/Test/JPEGImages',
+    default=None, #'data/Test/Test/JPEGImages',
     help='path to the evaluation annotations'
 )
 parser.add_argument(
@@ -81,9 +91,17 @@ if __name__ == '__main__':
     model.load_state_dict(checkpoint['model_state_dict'])
     model.to(DEVICE).eval()
 
+    if args.input_images and args.input_annots is not None:
+        eval_imgs, eval_annots = (args.input_images, args.input_annots)
+    else if split == 'test':
+        eval_imgs, eval_annots = (TEST_IMG, TEST_ANNOT)
+    else:
+        eval_imgs, eval_annots = (VALID_IMG, VALID_ANNOT)
+        
+
     test_dataset = create_valid_dataset(
-        args.input_images, 
-        args.input_annots,
+        eval_imgs, 
+        eval_annots,
         CLASSES,
         RESIZE_TO
     )
