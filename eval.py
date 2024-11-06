@@ -94,7 +94,7 @@ if __name__ == '__main__':
 
     if args.input_images and args.input_annots is not None:
         eval_imgs, eval_annots = (args.input_images, args.input_annots)
-    elif split == 'test':
+    elif args.split == 'test':
         eval_imgs, eval_annots = (TEST_IMG, TEST_ANNOT)
     else:
         eval_imgs, eval_annots = (VALID_IMG, VALID_ANNOT)
