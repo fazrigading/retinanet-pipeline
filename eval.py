@@ -54,20 +54,18 @@ args = parser.parse_args()
 
 # Evaluation function
 def validate(valid_data_loader, model):
+    n_threads = torch.get_num_threads()
+    torch.set_num_threads(1)
     model.eval()
-    
-    # Initialize tqdm progress bar.
-    prog_bar = tqdm(valid_data_loader, total=len(valid_data_loader))
     target = []
     preds = []
-    for i, data in enumerate(prog_bar):
-        images, targets = data
-        
+    for images, targets in tqdm(metric_logger.log_every(data_loader, 100, header), total=len(valid_data_loader)):
         images = list(image.to(DEVICE) for image in images)
-        targets = [{k: v.to(DEVICE) for k, v in t.items()} for t in targets]
         
+        if torch.cuda.is_available():
+            torch.cuda.synchronize()
         with torch.no_grad():
-            outputs = model(images, targets)
+            outputs = model(images)
 
         # For mAP calculation using Torchmetrics.
         #####################################
@@ -82,9 +80,11 @@ def validate(valid_data_loader, model):
             preds.append(preds_dict)
             target.append(true_dict)
         #####################################
-    
 
-    metric.reset()
+        outputs = [{k: v.to(DEVICE) for k, v in t.items()} for t in outputs]
+
+    metric_logger.synchronize_between_processes()
+    torch.set_num_threads(n_threads)
     metric.update(preds, target)
     metric_summary = metric.compute()
     return metric_summary
