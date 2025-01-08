@@ -1,5 +1,5 @@
 # Base-------------------------------------
-albumentations>=1.1.0
+albumentations==1.1.0
 ipython
 jupyter
 matplotlib
@@ -13,7 +13,7 @@ scipy
 torch>=1.12.0
 torchvision>=0.13.0
 numpy
-protobuf<=3.20.1
+# protobuf<=3.20.1
 pandas
 tqdm
 

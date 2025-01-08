@@ -1,6 +1,6 @@
 import torch
 
-BATCH_SIZE = 16 # Increase / decrease according to GPU memeory.
+BATCH_SIZE = 8 # Increase / decrease according to GPU memeory.
 RESIZE_TO = 640 # Base image resolution transforms.
 NUM_EPOCHS = 100 # Number of epochs to train for.
 NUM_WORKERS = 2 # Number of parallel workers for data loading.
@@ -29,6 +29,10 @@ TRAIN_ANNOT = 'data/ganoderma/train'
 # Validation images and XML files directory.
 VALID_IMG = 'data/ganoderma/valid'
 VALID_ANNOT = 'data/ganoderma/valid'
+# Test images and XML files directory.
+TEST_IMG = 'data/ganoderma/test'
+TEST_ANNOT = 'data/ganoderma/test'
+
 # Classes: 0 index is reserved for background.
 CLASSES = [
     '__background__',
