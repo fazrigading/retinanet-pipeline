@@ -54,6 +54,7 @@ parser.add_argument(
 args = parser.parse_args()
 
 # Evaluation function
+@torch.inference_mode()
 def validate(valid_data_loader, model):
     n_threads = torch.get_num_threads()
     torch.set_num_threads(1)
@@ -122,10 +123,8 @@ if __name__ == '__main__':
     metric.warn_on_many_detections=False
     
     metric_summary = validate(test_loader, model)
-    print(f"mAP_50: {metric_summary['map_50']*100:.3f}")
-    print(f"mAP_50_95: {metric_summary['map']*100:.3f}")
-    class_counter = 0
-    for i in range(0, len(CLASSES)-1, 1):
-        class_counter += 1
-        print(f"AP_50_95 {class_counter:<3} {CLASSES[i+1]:<20}: {nparray(metric_summary['map_per_class'][i]):.3f}")
-    print(f"Avg: {nparray(metric_summary['map']):.3f}")
+    print(metric_summary)
+    print("\nEvaluation Summary:")
+    print(f"mAP_50: {metric_summary['map_50']}")
+    print(f"mAP_50_95: {metric_summary['map']}")
+    print(f"AP_50_95 :{metric_summary['map_per_class']}")
