@@ -18,6 +18,7 @@ from torchmetrics.detection.mean_ap import MeanAveragePrecision
 from model import create_model
 from datasets import create_valid_dataset, create_valid_loader
 from numpy import array as nparray
+from metrics import utils
 
 parser = argparse.ArgumentParser()
 parser.add_argument(
@@ -57,6 +58,7 @@ def validate(valid_data_loader, model):
     n_threads = torch.get_num_threads()
     torch.set_num_threads(1)
     model.eval()
+    metric_logger = utils.MetricLogger(delimiter="  ")
     target = []
     preds = []
     for images, targets in tqdm(metric_logger.log_every(data_loader, 100, header), total=len(valid_data_loader)):
