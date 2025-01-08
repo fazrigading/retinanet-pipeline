@@ -59,6 +59,7 @@ def validate(valid_data_loader, model):
     torch.set_num_threads(1)
     model.eval()
     metric_logger = utils.MetricLogger(delimiter="  ")
+    header = "Evaluate:"
     target = []
     preds = []
     for images, targets in tqdm(metric_logger.log_every(valid_data_loader, 100, header), total=len(valid_data_loader)):
