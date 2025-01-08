@@ -17,6 +17,7 @@ from config import (
 from torchmetrics.detection.mean_ap import MeanAveragePrecision
 from model import create_model
 from datasets import create_valid_dataset, create_valid_loader
+from numpy import array as nparray
 
 parser = argparse.ArgumentParser()
 parser.add_argument(
@@ -123,5 +124,5 @@ if __name__ == '__main__':
     class_counter = 0
     for i in range(0, len(CLASSES)-1, 1):
         class_counter += 1
-        print(f"AP_50_95 {class_counter:<3} {CLASSES[i+1]:<20}: {metric_summary['map_per_class'][i]:.3f}")
-    print(f"Avg: {metric_summary['map']:.3f}")
+        print(f"AP_50_95 {class_counter:<3} {CLASSES[i+1]:<20}: {nparray(metric_summary['map_per_class'][i]):.3f}")
+    print(f"Avg: {nparray(metric_summary['map']):.3f}")
