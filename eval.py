@@ -61,7 +61,7 @@ def validate(valid_data_loader, model):
     metric_logger = utils.MetricLogger(delimiter="  ")
     target = []
     preds = []
-    for images, targets in tqdm(metric_logger.log_every(data_loader, 100, header), total=len(valid_data_loader)):
+    for images, targets in tqdm(metric_logger.log_every(valid_data_loader, 100, header), total=len(valid_data_loader)):
         images = list(image.to(DEVICE) for image in images)
         
         if torch.cuda.is_available():
