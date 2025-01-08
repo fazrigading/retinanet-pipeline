@@ -123,5 +123,5 @@ if __name__ == '__main__':
     class_counter = 0
     for i in range(0, len(CLASSES)-1, 1):
         class_counter += 1
-        print(f"AP_50_95 {class_counter:<3} {CLASSES[i+1]:<20}: {stats['map_per_class'][i]:.3f}")
-    print(f"Avg: {stats['map']:.3f}")
+        print(f"AP_50_95 {class_counter:<3} {CLASSES[i+1]:<20}: {metric_summary['map_per_class'][i]:.3f}")
+    print(f"Avg: {metric_summary['map']:.3f}")
