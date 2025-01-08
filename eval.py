@@ -120,11 +120,8 @@ if __name__ == '__main__':
     metric_summary = validate(test_loader, model)
     print(f"mAP_50: {metric_summary['map_50']*100:.3f}")
     print(f"mAP_50_95: {metric_summary['map']*100:.3f}")
-<<<<<<< HEAD
     class_counter = 0
     for i in range(0, len(CLASSES)-1, 1):
         class_counter += 1
         print(f"AP_50_95 {class_counter:<3} {CLASSES[i+1]:<20}: {np.array(stats['map_per_class'][i]):.3f}")
     print(f"Avg: {np.array(stats['map']):.3f}")
-=======
->>>>>>> 4a2c8e5aa427451000472c765b662766640b80d5
