@@ -56,6 +56,7 @@ args = parser.parse_args()
 # Evaluation function
 @torch.inference_mode()
 def validate(valid_data_loader, model):
+    metric = MeanAveragePrecision(class_metrics=True)
     n_threads = torch.get_num_threads()
     torch.set_num_threads(1)
     model.eval()
@@ -76,11 +77,11 @@ def validate(valid_data_loader, model):
         for i in range(len(images)):
             true_dict = dict()
             preds_dict = dict()
-            true_dict['boxes'] = targets[i]['boxes'].detach()
-            true_dict['labels'] = targets[i]['labels'].detach()
-            preds_dict['boxes'] = outputs[i]['boxes'].detach()
-            preds_dict['scores'] = outputs[i]['scores'].detach()
-            preds_dict['labels'] = outputs[i]['labels'].detach()
+            true_dict['boxes'] = targets[i]['boxes'].detach().cpu()
+            true_dict['labels'] = targets[i]['labels'].detach().cpu()
+            preds_dict['boxes'] = outputs[i]['boxes'].detach().cpu()
+            preds_dict['scores'] = outputs[i]['scores'].detach().cpu()
+            preds_dict['labels'] = outputs[i]['labels'].detach().cpu()
             preds.append(preds_dict)
             target.append(true_dict)
         #####################################
@@ -119,9 +120,7 @@ if __name__ == '__main__':
         int(args.batch),
         num_workers=NUM_WORKERS,
     )
-    metric = MeanAveragePrecision()
-    metric.warn_on_many_detections=False
-    
+
     metric_summary = validate(test_loader, model)
     print(metric_summary)
     print("\nEvaluation Summary:")
