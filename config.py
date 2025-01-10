@@ -50,4 +50,4 @@ AMP = True
 
 # If kept None, it will be incremental as exp1, exp2,
 # else it will be name provided.
-PROJECT_NAME = 'ganoderma-retinanet' 
+PROJECT_NAME = 'ganoderma-retinanet-3-8' 
