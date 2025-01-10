@@ -66,11 +66,12 @@ def validate(valid_data_loader, model):
     preds = []
     for images, targets in tqdm(metric_logger.log_every(valid_data_loader, 100, header), total=len(valid_data_loader)):
         images = list(image.to(DEVICE) for image in images)
+        targets = [{k: v.to(DEVICE) for k, v in t.items()} for t in targets]
         
         if torch.cuda.is_available():
             torch.cuda.synchronize()
         with torch.no_grad():
-            outputs = model(images)
+            outputs = model(images, targets)
 
         # For mAP calculation using Torchmetrics.
         #####################################
@@ -85,8 +86,6 @@ def validate(valid_data_loader, model):
             preds.append(preds_dict)
             target.append(true_dict)
         #####################################
-
-        outputs = [{k: v.to(DEVICE) for k, v in t.items()} for t in outputs]
 
     metric_logger.synchronize_between_processes()
     torch.set_num_threads(n_threads)
