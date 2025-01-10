@@ -61,7 +61,7 @@ def validate(model, valid_dataloader, device):
     print('Validating')
     n_threads = torch.get_num_threads()
     torch.set_num_threads(1)
-    cpu_device = torch.device("cpu")
+    # cpu_device = torch.device("cpu")
     metric_logger = utils.MetricLogger(delimiter="  ")
     header = "Test:"
 
@@ -84,7 +84,8 @@ def validate(model, valid_dataloader, device):
         model_time = time.time()
         with torch.no_grad():
             outputs = model(images, targets)
-        outputs = [{k: v.to(cpu_device) for k, v in t.items()} for t in outputs]
+        outputs = [{k: v.to(device) for k, v in t.items()} for t in outputs]
+        # outputs = [{k: v.to(cpu_device) for k, v in t.items()} for t in outputs]
         model_time = time.time() - model_time
 
         res = {target["image_id"].item(): output for target, output in zip(targets, outputs)}
