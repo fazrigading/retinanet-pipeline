@@ -1,10 +1,10 @@
 import torch
 
-BATCH_SIZE = 8 # Increase / decrease according to GPU memeory.
+BATCH_SIZE = 12 # Increase / decrease according to GPU memeory.
 RESIZE_TO = 640 # Base image resolution transforms.
 NUM_EPOCHS = 100 # Number of epochs to train for.
-NUM_WORKERS = 2 # Number of parallel workers for data loading.
-LR = 0.005 # Initial learning rate. 
+NUM_WORKERS = 4 # Number of parallel workers for data loading.
+LR = 0.001667 # Initial learning rate. 
 DEVICE = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
 
 # Keep `resolutions=None` for not using multi-resolution training,
@@ -24,14 +24,14 @@ RESOLUTIONS = [
 # RESOLUTIONS = None
 
 # Training images and XML files directory.
-TRAIN_IMG = 'data/ganoderma/train'
-TRAIN_ANNOT = 'data/ganoderma/train'
+TRAIN_IMG = 'data/ganoderma-3-8/train'
+TRAIN_ANNOT = 'data/ganoderma-3-8/train'
 # Validation images and XML files directory.
-VALID_IMG = 'data/ganoderma/valid'
-VALID_ANNOT = 'data/ganoderma/valid'
+VALID_IMG = 'data/ganoderma-3-8/valid'
+VALID_ANNOT = 'data/ganoderma-3-8/valid'
 # Test images and XML files directory.
-TEST_IMG = 'data/ganoderma/test'
-TEST_ANNOT = 'data/ganoderma/test'
+TEST_IMG = 'data/ganoderma-3-8/test'
+TEST_ANNOT = 'data/ganoderma-3-8/test'
 
 # Classes: 0 index is reserved for background.
 CLASSES = [
