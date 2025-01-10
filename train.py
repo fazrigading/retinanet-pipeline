@@ -85,7 +85,8 @@ if __name__ == '__main__':
         p.numel() for p in model.parameters() if p.requires_grad)
     print(f"{total_trainable_params:,} training parameters.")
     params = [p for p in model.parameters() if p.requires_grad]
-    optimizer = torch.optim.SGD(params, lr=LR, momentum=0.9, nesterov=True)
+    optimizer = torch.optim.AdamW(params, lr=LR, momentum=0.9, weight_decay=0.0005)
+    # optimizer = torch.optim.SGD(params, lr=LR, momentum=0.9, nesterov=True)
     scheduler = StepLR(
         optimizer=optimizer, step_size=50, gamma=0.1, verbose=True
     )
