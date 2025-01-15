@@ -5,6 +5,7 @@ RESIZE_TO = 640 # Base image resolution transforms.
 NUM_EPOCHS = 100 # Number of epochs to train for.
 NUM_WORKERS = 4 # Number of parallel workers for data loading.
 LR = 0.001667 # Initial learning rate. 
+LRF = 0.1 # Learning rate factor by which it will be reduced.
 DEVICE = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
 
 # Keep `resolutions=None` for not using multi-resolution training,

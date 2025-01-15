@@ -13,6 +13,7 @@ from config import (
     RESIZE_TO,
     BATCH_SIZE,
     LR,
+    LRF,
     AMP,
     RESOLUTIONS
 )
@@ -85,11 +86,13 @@ if __name__ == '__main__':
         p.numel() for p in model.parameters() if p.requires_grad)
     print(f"{total_trainable_params:,} training parameters.")
     params = [p for p in model.parameters() if p.requires_grad]
-    optimizer = torch.optim.AdamW(params, lr=LR, weight_decay=0.0005)
-    # optimizer = torch.optim.SGD(params, lr=LR, momentum=0.9, nesterov=True)
-    # scheduler = StepLR(
-    #     optimizer=optimizer, step_size=50, gamma=0.1, verbose=True
-    # )
+    # optimizer = torch.optim.AdamW(params, lr=LR, weight_decay=0.0005)
+    optimizer = torch.optim.SGD(params, lr=LR, momentum=0.9, nesterov=True)
+    scheduler = StepLR(
+        optimizer=optimizer, step_size=50, gamma=0.1, verbose=True
+    )
+    lf = lambda x: max(1 - x / NUM_EPOCHS, 0) * (1.0 - LRF) + LRF
+    schedulerLambda = torch.optim.lr_scheduler.LambdaLR(optimizer, lr_lambda=lf)
 
     # To store training loss and mAP values.
     train_loss_list = []
