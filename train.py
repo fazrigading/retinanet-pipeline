@@ -87,9 +87,9 @@ if __name__ == '__main__':
     params = [p for p in model.parameters() if p.requires_grad]
     optimizer = torch.optim.AdamW(params, lr=LR, weight_decay=0.0005)
     # optimizer = torch.optim.SGD(params, lr=LR, momentum=0.9, nesterov=True)
-    scheduler = StepLR(
-        optimizer=optimizer, step_size=50, gamma=0.1, verbose=True
-    )
+    # scheduler = StepLR(
+    #     optimizer=optimizer, step_size=50, gamma=0.1, verbose=True
+    # )
 
     # To store training loss and mAP values.
     train_loss_list = []
@@ -140,6 +140,6 @@ if __name__ == '__main__':
 
         # Save mAP plot.
         save_mAP(OUT_DIR, map_50_list, map_list)
-        scheduler.step()
+        # scheduler.step()
         coco_log(OUT_DIR, stats)
         print('#'*80)
